@@ -1,0 +1,6 @@
+workspace: "/tmp/"
+rpms:
+  - libstdc++
+  - libstdc++-devel
+  - libuv
+  - libuv-devel

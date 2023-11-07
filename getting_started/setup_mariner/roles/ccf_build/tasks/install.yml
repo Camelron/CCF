@@ -1,0 +1,20 @@
+- name: Include vars for Clang
+  include_vars: "clang{{ clang_version }}.yml"
+
+- name: Install rpms
+  dnf:
+    name: "{{ rpms }}"
+    update_cache: yes
+  become: yes
+
+# Note: Do not install docker CLI if moby-buildx is already installed
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install docker rpms
+  dnf:
+    name: "{{ docker_rpms }}"
+    update_cache: yes
+  become: yes
+  when: "'moby-buildx' not in ansible_facts.packages"

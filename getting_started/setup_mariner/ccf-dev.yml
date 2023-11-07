@@ -1,0 +1,49 @@
+- hosts: localhost
+  vars:
+    platform: "snp"
+    clang_version: "16"
+  tasks:
+    - import_role:
+        name: intel
+        tasks_from: sgx-psw.yml
+      when: platform == "sgx"
+    - import_role:
+        name: intel
+        tasks_from: sgx-group.yml
+      when: platform == "sgx"
+    - import_role:
+        name: az_dcap
+        tasks_from: install.yml
+      when: platform == "sgx"
+    - import_role:
+        name: openenclave
+        tasks_from: binary_install.yml
+      when: platform == "sgx"
+                  # - import_role: # TODO
+                  #     name: openenclave
+                  #     tasks_from: install_host_verify.yml
+                  #   when: platform != "sgx"    
+    - import_role:
+        name: nodejs
+        tasks_from: install.yml
+    # - import_role:
+    #     name: h2spec
+    #     tasks_from: install.yml
+    - import_role:
+        name: ccf_run
+        tasks_from: install.yml
+    - import_role:
+        name: ccf_build
+        tasks_from: install.yml
+    - import_role:  # left untouched for now since Mariner can install it too
+        name: protoc
+        tasks_from: install.yml
+    # - import_role:
+    #     name: perf-tool
+    #     tasks_from: install.yml
+    # - import_role:  # incompatible with llvm16; we only have version 12 of this package
+    #     name: lldb
+    #     tasks_from: install.yml
+    # - import_role:
+    #     name: autoremove
+    #     tasks_from: install.yml

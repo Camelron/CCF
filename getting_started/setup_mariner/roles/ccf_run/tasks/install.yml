@@ -1,0 +1,8 @@
+- name: Include vars for Clang
+  include_vars: "clang{{ clang_version }}.yml"
+
+- name: Install rpms
+  dnf:
+    name: "{{ rpms }}"
+    update_cache: yes
+  become: yes
